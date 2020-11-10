@@ -12,3 +12,11 @@ model Notes {
   UserId Int
   Note   String
 }
+
+model Users {
+  UserId   Int    @id @default(autoincrement())
+  Login    String
+  Password String
+  Name     String
+  Lastname String
+}
