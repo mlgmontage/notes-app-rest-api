@@ -4,6 +4,7 @@ const signupSchema = require("../schemas/register");
 const loginSchema = require("../schemas/login");
 const { PrismaClient } = require("@prisma/client");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const prisma = new PrismaClient();
 
@@ -45,7 +46,9 @@ router.post("/signin", async (req, res) => {
       );
       if (isCorrectPassword) {
         res.json({
-          message: "success",
+          token: jwt.sign(login[0], process.env.REFRESH_TOKEN_SECRET, {
+            expiresIn: process.env.REFRESH_TOKEN_LIFE,
+          }),
         });
       } else {
         res.status(400).json({
