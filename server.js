@@ -3,6 +3,7 @@ const volleyball = require("volleyball");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const port = process.env.PORT || 8080;
+const authMiddleware = require("./middlewares/authMiddleware");
 dotenv.config();
 
 const app = express();
@@ -13,7 +14,7 @@ app.use(volleyball);
 app.use(express.json());
 
 // Notes
-app.use("/api/notes", require("./api/routes/notes"));
+app.use("/api/notes", authMiddleware, require("./api/routes/notes"));
 
 // Users
 app.use("/api/users", require("./api/routes/users"));

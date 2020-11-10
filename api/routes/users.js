@@ -47,7 +47,7 @@ router.post("/signin", async (req, res) => {
       if (isCorrectPassword) {
         res.json({
           token: jwt.sign(login[0], process.env.ACCESS_TOKEN_SECRET, {
-            expiresIn: process.env.ACCESS_TOKEN_LIFE,
+            expiresIn: "15m",
           }),
         });
       } else {

@@ -1,13 +1,14 @@
 const jwt = require("jsonwebtoken");
 
 const authMiddleware = async (req, res, next) => {
-  const authHeader = req.headers["Authorization"];
+  const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
-  if (token == null) return res.sendStatus(403);
+  console.log(authHeader);
+  if (token == null) return res.sendStatus(401);
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, user) => {
     console.log(error);
-    if (error) return res.sendStatus(403);
+    if (error) return res.sendStatus(401);
     req.user = user;
     next();
   });
