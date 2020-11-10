@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const signupSchema = require("../schemas/register");
+const loginSchema = require("../schemas/login");
 const { PrismaClient } = require("@prisma/client");
 const bcrypt = require("bcryptjs");
 
@@ -28,6 +29,36 @@ router.post("/signup", async (req, res) => {
     }
   } else {
     res.status(400).json(signupSchema.validate(body).error.details);
+  }
+});
+
+router.post("/signin", async (req, res) => {
+  const body = req.body;
+
+  if (!loginSchema.validate(body).error) {
+    const login = await prisma.users.findMany({ where: { Login: body.Login } });
+
+    if (login.length) {
+      const isCorrectPassword = await bcrypt.compare(
+        body.Password,
+        login[0].Password
+      );
+      if (isCorrectPassword) {
+        res.json({
+          message: "success",
+        });
+      } else {
+        res.status(400).json({
+          message: "Auth error",
+        });
+      }
+    } else {
+      res.status(400).json({
+        message: "There is no login",
+      });
+    }
+  } else {
+    res.status(400).json(loginSchema.validate(body).error.details);
   }
 });
 
