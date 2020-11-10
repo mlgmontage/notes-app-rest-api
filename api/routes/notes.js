@@ -5,12 +5,15 @@ const prisma = new PrismaClient();
 const noteSchema = require("../schemas/note");
 
 router.get("/", async (req, res) => {
-  const notes = await prisma.notes.findMany();
+  const notes = await prisma.notes.findMany({
+    where: { UserId: req.user.UserId },
+  });
   res.json(notes);
 });
 
 router.post("/create", async (req, res) => {
   const body = req.body;
+  body.UserId = req.user.UserId;
 
   if (!noteSchema.validate(body).error) {
     const created = await prisma.notes.create({
