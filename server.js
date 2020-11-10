@@ -15,6 +15,9 @@ app.use(express.json());
 // Notes
 app.use("/api/notes", require("./api/routes/notes"));
 
+// Users
+app.use("/api/users", require("./api/routes/users"));
+
 app.get("/hello", async (req, res) => {
   res.json({
     message: "hello, world",
