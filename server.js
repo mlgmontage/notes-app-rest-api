@@ -12,6 +12,9 @@ app.use(cors());
 app.use(volleyball);
 app.use(express.json());
 
+// Notes
+app.use("/api/notes", require("./api/routes/notes"));
+
 app.get("/hello", async (req, res) => {
   res.json({
     message: "hello, world",
